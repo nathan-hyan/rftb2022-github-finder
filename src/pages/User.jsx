@@ -5,7 +5,7 @@ import { FaCodepen, FaStore, FaUserFriends, FaUsers } from 'react-icons/fa';
 import Spinner from '../components/layout/Spinner';
 import GithubContext from '../context/github/GithubContext';
 import ReposList from '../components/repos/ReposList';
-import { getUser, getRepos } from '../context/github/GithubActions';
+import { getUserAndRepos } from '../context/github/GithubActions';
 
 function User() {
   const { id } = useParams();
@@ -37,11 +37,8 @@ function User() {
       type: 'SET_LOADING',
     });
     const fetchData = async () => {
-      const getUserData = await getUser(id);
-      dispatch({ type: 'GET_USER', payload: getUserData });
-
-      const getRepoData = await getRepos(id);
-      dispatch({ type: 'GET_REPOS', payload: getRepoData });
+      const data = await getUserAndRepos(id);
+      dispatch({ type: 'GET_USER_AND_REPOS', payload: data });
     };
 
     fetchData();
@@ -176,7 +173,7 @@ function User() {
             </div>
           </div>
         </div>
-        <ReposList repos={repos} fetchRepos={getRepos} />
+        <ReposList repos={repos} />
       </div>
     </>
   );
